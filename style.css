@@ -1,0 +1,333 @@
+/* Define a CSS variable for the accent color */
+:root {
+    --accent-color-light: #4a4a4a; /* Darker gray for light mode accent */
+    --accent-color-dark: #b0b0b0; /* Lighter gray for dark mode accent */
+    --timeline-accent-color: #00FF00; /* Vibrant green for timeline elements, as seen in the image */
+    --progress-bar-fill-light: #808080; /* Medium gray for progress bar fill in light mode */
+    --progress-bar-fill-dark: #e0e0e0; /* Lighter gray for progress bar fill in dark mode */
+}
+
+/* Base styles for light mode */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* Pure white background for light mode */
+    color: #212121; /* Very dark gray text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+.section-heading {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+    color: #212121; /* Ensure heading text is dark in light mode */
+    transition: color 0.3s ease;
+}
+.section-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: 3px;
+    background-color: var(--accent-color-light); /* Accent color for light mode */
+    border-radius: 9999px;
+    transition: background-color 0.3s ease;
+}
+
+/* Animated background for hero section */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('br.png'); /* Set your background image here */
+    background-size: cover; /* Cover the entire area */
+    background-position: center center; /* Center the image */
+    background-repeat: no-repeat;
+    z-index: 0; /* Ensure particles are behind content */
+    transition: background-color 0.5s ease; /* Smooth transition for background if needed */
+}
+/* Ensure content is above particles */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    /* Color will be set by JavaScript dynamically */
+}
+
+
+.gradient-text {
+    /* Changed to use accent colors for text gradient */
+    background: linear-gradient(to right, var(--accent-color-light), #808080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background 0.3s ease;
+}
+.card {
+    background-color: #ffffff; /* White card background */
+    border-radius: 0.75rem; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+.skill-item {
+    background-color: #e0e0e0; /* Light gray for skills */
+    color: #404040; /* Darker text for skills */
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.project-image {
+    object-fit: cover;
+    width: 100%;
+    height: 200px; /* Fixed height for project images */
+}
+/* skill-icon class properties for sizing and margin, fill color is handled by SVG itself */
+.skill-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 0.75rem;
+    /* No 'color' property here to allow SVG's internal fill/stroke to take precedence */
+}
+.contact-social-icon {
+    color: #505050; /* Medium gray for social icons in light mode */
+    transition: color 0.3s ease;
+}
+.contact-social-icon:hover {
+    color: var(--accent-color-light); /* Accent color on hover */
+}
+
+/* Project description text color */
+.project-description-text {
+    color: #404040; /* Dark gray for light mode */
+    transition: color 0.3s ease;
+}
+
+/* Progress bar styling */
+.progress-bar-track {
+    background-color: #e0e0e0; /* Light gray track */
+    border-radius: 9999px; /* Fully rounded */
+    height: 8px; /* Height of the bar */
+    width: 100%; /* Full width within its container */
+    overflow: hidden; /* Hide overflow of the fill */
+}
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--progress-bar-fill-light); /* Fill color */
+    border-radius: 9999px;
+    transition: width 0.5s ease-out, background-color 0.3s ease; /* Smooth animation for width change and color */
+}
+
+/* Timeline specific styles */
+.timeline {
+    position: relative;
+    padding-left: 20px; /* Space for the line */
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--accent-color-light); /* Timeline line color */
+    transition: background-color 0.3s ease;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 30px; /* Space for the circle and content */
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -8px; /* Adjust to center on the line */
+    top: 0;
+    width: 18px;
+    height: 18px;
+    background-color: var(--timeline-accent-color); /* Circle color */
+    border-radius: 50%;
+    border: 2px solid #ffffff; /* White border for circles */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    z-index: 1; /* Ensure circle is above the line */
+}
+.timeline-item-title {
+    color: var(--timeline-accent-color); /* Title color */
+    font-weight: 600; /* Semi-bold */
+    font-size: 1.25rem; /* text-xl */
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+.timeline-item-date-box {
+    display: inline-block;
+    background-color: var(--accent-color-light); /* Date box background */
+    color: #ffffff; /* Date box text color */
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem; /* rounded-md */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.timeline-item p {
+    margin-bottom: 0.25rem; /* Smaller margin for list items */
+    color: #212121; /* Default text color for light mode */
+    transition: color 0.3s ease;
+}
+
+
+/* Specific light mode background for sections */
+section#about, section#projects, section#education { /* Added education section */
+    background-color: #ffffff; /* Pure white */
+    transition: background-color 0.3s ease;
+}
+section#skills, section#contact {
+    background-color: #f0f0f0; /* Slightly darker light gray for contrast */
+    transition: background-color 0.3s ease;
+}
+footer {
+    background-color: #333333; /* Dark gray for light mode footer */
+    transition: background-color 0.3s ease;
+}
+
+/* Dark mode styles */
+html.dark body {
+    background-color: #0a0a0a; /* Almost black background */
+    color: #f0f0f0; /* Light gray text */
+}
+html.dark .section-heading {
+    color: #f0f0f0; /* Ensure heading text is light in dark mode */
+}
+html.dark .section-heading::after {
+    background-color: var(--accent-color-dark); /* Accent color for dark mode */
+}
+html.dark .gradient-text {
+    /* Changed to use accent colors for text gradient */
+    background: linear-gradient(to right, var(--accent-color-dark), #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+html.dark .card {
+    background-color: #1a1a1a; /* Darker card background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+html.dark .card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+html.dark .skill-item {
+    background-color: #2c2c2c; /* Medium dark gray skill background */
+    color: #e0e0e0; /* Lighter text for skills */
+}
+/* No fill color defined for skill-icon in dark mode, as original logo colors are preferred */
+html.dark .contact-social-icon {
+    color: #a0a0a0; /* Lighter gray for social icons in dark mode */
+}
+html.dark .contact-social-icon:hover {
+    color: var(--accent-color-dark); /* Accent color on hover */
+}
+
+/* Dark mode project description text color */
+html.dark .project-description-text {
+    color: #c0c0c0; /* Lighter gray for dark mode */
+}
+
+/* Dark mode progress bar styling */
+html.dark .progress-bar-track {
+    background-color: #2c2c2c; /* Darker gray track */
+}
+html.dark .progress-bar-fill {
+    background-color: var(--progress-bar-fill-dark); /* Lighter gray fill */
+}
+
+/* Dark mode timeline specific styles */
+html.dark .timeline::before {
+    background-color: var(--accent-color-dark); /* Dark mode timeline line color */
+}
+html.dark .timeline-item::before {
+    background-color: var(--timeline-accent-color); /* Circle color remains vibrant green */
+    border-color: #0a0a0a; /* Darker border for circles in dark mode */
+}
+html.dark .timeline-item-title {
+    color: var(--timeline-accent-color); /* Title color remains vibrant green */
+}
+html.dark .timeline-item-date-box {
+    background-color: var(--accent-color-dark); /* Date box background in dark mode */
+    color: #0a0a0a; /* Date box text color in dark mode */
+}
+html.dark .timeline-item p {
+    color: #e0e0e0; /* Lighter text color for dark mode */
+}
+
+
+/* Dark mode section backgrounds */
+html.dark section#about, html.dark section#projects, html.dark section#education { /* Added education section */
+    background-color: #1a1a1a; /* Dark gray */
+}
+html.dark section#skills, html.dark section#contact {
+    background-color: #0a0a0a; /* Deep dark gray */
+}
+html.dark footer {
+    background-color: #000000; /* Pure black for dark mode footer */
+}
+
+/* Fixed position for the theme toggle button */
+#theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+}
+
+/* Navigation buttons styling */
+.nav-button {
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+    backdrop-filter: blur(5px); /* Glassmorphism effect */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, color 0.3s ease; /* Added color to transition */
+}
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque on hover */
+    border-color: rgba(255, 255, 255, 0.5); /* Stronger border on hover */
+    transform: scale(1.05); /* Slight pop effect */
+}
+/* Light mode specific text color for nav buttons */
+.nav-button {
+    color: #212121; /* Dark text for light mode */
+}
+/* Dark mode specific text color for nav buttons */
+html.dark .nav-button {
+    color: #f0f0f0; /* Light text for dark mode */
+}
+
+
+/* Animation for elements entering the viewport */
+.fade-in-up-hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+.fade-in-up-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+/* Delay for sequential animations within a section */
+.fade-in-up-stagger-1 { transition-delay: 0.1s; }
+.fade-in-up-stagger-2 { transition-delay: 0.2s; }
+.fade-in-up-stagger-3 { transition-delay: 0.3s; }
+.fade-in-up-stagger-4 { transition-delay: 0.4s; }
+.fade-in-up-stagger-5 { transition-delay: 0.5s; }
+.fade-in-up-stagger-6 { transition-delay: 0.6s; }
+.fade-in-up-stagger-7 { transition-delay: 0.7s; }
+.fade-in-up-stagger-8 { transition-delay: 0.8s; }
