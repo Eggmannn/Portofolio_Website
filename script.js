@@ -22,17 +22,17 @@ const moonIcon = document.getElementById('moon-icon');
 const htmlElement = document.documentElement; // This is the <html> tag
 const heroSection = document.getElementById('hero-section');
 const particlesJsDiv = document.getElementById('particles-js');
+const heroContentDiv = heroSection.querySelector('.hero-content'); // Get the hero content div
+const navItems = document.querySelectorAll('.navbar-item'); // Get all nav items
 
 // Function to initialize particles.js with specific colors
-function initializeParticles(particleColor, backgroundColor) {
+function initializeParticles(particleColor) {
+    // Check if particles.js is already initialized
     if (window.pJSDom && window.pJSDom.length > 0) {
-        // If particles.js is already initialized, destroy it first
-        // This is crucial for re-initialization to work correctly
+        // Destroy existing particles.js instance to prevent duplicates and ensure clean re-initialization
         window.pJSDom[0].pJS.fn.vendors.destroypJS();
         window.pJSDom = []; // Clear the pJSDom array
     }
-
-    particlesJsDiv.style.backgroundColor = backgroundColor; // Set the div background
 
     particlesJS('particles-js', {
         "particles": {
@@ -56,7 +56,7 @@ function initializeParticles(particleColor, backgroundColor) {
                     "nb_sides": 5
                 },
                 "image": {
-                    "src": "img/github.svg",
+                    "src": "img/github.svg", // Placeholder, not used for circle particles
                     "width": 100,
                     "height": 100
                 }
@@ -149,17 +149,16 @@ function initializeParticles(particleColor, backgroundColor) {
 // Function to set the theme and re-initialize particles
 function setTheme(theme) {
     const particleColor = (theme === 'dark') ? "#ffffff" : "#000000";
-    const backgroundColor = (theme === 'dark') ? '#0a0a0a' : '#ffffff';
-    const heroContentTextColor = (theme === 'dark') ? '#ffffff' : '#212121'; // Define text color for hero content
+    const heroContentTextColor = (theme === 'dark') ? '#ffffff' : '#212121'; // Text color for "Hi, I'm" and description
 
     htmlElement.classList.toggle('dark', theme === 'dark');
     sunIcon.classList.toggle('hidden', theme === 'dark');
     moonIcon.classList.toggle('hidden', theme !== 'dark');
 
-    initializeParticles(particleColor, backgroundColor); // Re-initialize particles with new colors
+    // Re-initialize particles with new colors (background image is handled by CSS)
+    initializeParticles(particleColor);
 
     // Update the color of the hero-content div directly
-    const heroContentDiv = heroSection.querySelector('.hero-content');
     if (heroContentDiv) {
         heroContentDiv.style.color = heroContentTextColor;
     }
@@ -167,46 +166,72 @@ function setTheme(theme) {
     localStorage.setItem('theme', theme); // Save preference
 }
 
-// Apply theme on initial load
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-    setTheme(savedTheme);
-} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    setTheme('dark');
-} else {
-    setTheme('light');
-}
+// Function to handle active navigation item
+function updateActiveNavItem() {
+    const currentScrollPos = window.scrollY + window.innerHeight / 2; // Check middle of viewport
 
-// Toggle theme on button click
-themeToggle.addEventListener('click', () => {
-    if (htmlElement.classList.contains('dark')) {
-        setTheme('light');
-    } else {
-        setTheme('dark');
-    }
-});
+    navItems.forEach(item => {
+        const sectionId = item.getAttribute('data-section');
+        const section = document.getElementById(sectionId);
 
-// Intersection Observer for fade-in-up animation
-const fadeInUpElements = document.querySelectorAll('.fade-in-up-hidden');
-
-const observerOptions = {
-    root: null, // viewport
-    rootMargin: '0px',
-    threshold: 0.1 // 10% of the element must be visible
-};
-
-const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Add the 'visible' class to trigger animation
-            entry.target.classList.add('fade-in-up-visible');
-            // Stop observing once animated
-            observer.unobserve(entry.target);
+        if (section) {
+            if (currentScrollPos >= section.offsetTop && currentScrollPos < section.offsetTop + section.offsetHeight) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
         }
     });
-}, observerOptions);
+}
 
-// Observe each element
-fadeInUpElements.forEach(element => {
-    observer.observe(element);
+
+// Ensure DOM is fully loaded before running scripts
+document.addEventListener('DOMContentLoaded', () => {
+    // Apply theme on initial load (after DOM is ready)
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+    } else {
+        setTheme('light');
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        if (htmlElement.classList.contains('dark')) {
+            setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+    });
+
+    // Intersection Observer for fade-in-up animation
+    const fadeInUpElements = document.querySelectorAll('.fade-in-up-hidden');
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.1 // 10% of the element must be visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add the 'visible' class to trigger animation
+                entry.target.classList.add('fade-in-up-visible');
+                // Stop observing once animated
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe each element
+    fadeInUpElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    // Update active nav item on scroll and load
+    window.addEventListener('scroll', updateActiveNavItem);
+    updateActiveNavItem(); // Initial call to set active item on load
 });

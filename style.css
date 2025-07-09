@@ -2,9 +2,17 @@
 :root {
     --accent-color-light: #4a4a4a; /* Darker gray for light mode accent */
     --accent-color-dark: #b0b0b0; /* Lighter gray for dark mode accent */
-    --timeline-accent-color: #00FF00; /* Vibrant green for timeline elements, as seen in the image */
+    --timeline-accent-color: #00FF00; /* Vibrant green for timeline elements */
     --progress-bar-fill-light: #808080; /* Medium gray for progress bar fill in light mode */
     --progress-bar-fill-dark: #e0e0e0; /* Lighter gray for progress bar fill in dark mode */
+
+    /* New navigation specific colors (from ssdf.png) */
+    --navbar-bg: #404040; /* Dark grey from image */
+    --navbar-item-color: #f0f0f0; /* Light text/icon for inactive items */
+    --navbar-active-bg: #fcfcfc; /* Orange/yellow from image */
+    --navbar-active-color: #333333; /* Dark text/icon for active item */
+    --tooltip-bg: #c4c3c1; /* Tooltip background color */
+    --tooltip-text-color: #333333; /* Tooltip text color */
 }
 
 /* Base styles for light mode */
@@ -286,31 +294,100 @@ html.dark footer {
 #theme-toggle {
     position: fixed;
     top: 1.5rem;
-    right: 1.5rem;
+    left: 1.5rem; /* Changed from right to left */
     z-index: 1000;
 }
 
-/* Navigation buttons styling */
-.nav-button {
-    background-color: rgba(255, 255, 255, 0.1); /* Transparent white */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
-    backdrop-filter: blur(5px); /* Glassmorphism effect */
-    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, color 0.3s ease; /* Added color to transition */
-}
-.nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque on hover */
-    border-color: rgba(255, 255, 255, 0.5); /* Stronger border on hover */
-    transform: scale(1.05); /* Slight pop effect */
-}
-/* Light mode specific text color for nav buttons */
-.nav-button {
-    color: #212121; /* Dark text for light mode */
-}
-/* Dark mode specific text color for nav buttons */
-html.dark .nav-button {
-    color: #f0f0f0; /* Light text for dark mode */
+/* Navigation bar styling */
+.navbar {
+    position: fixed;
+    bottom: 1.5rem; /* Fixed to bottom with some margin */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    width: auto; /* Adjust width based on content */
+    max-width: 90%; /* Max width for responsiveness */
+    background-color: var(--navbar-bg); /* Dark background */
+    border-radius: 9999px; /* Fully rounded corners */
+    padding: 0.75rem; /* Compact initial padding */
+    display: flex;
+    justify-content: space-around; /* Distribute items evenly */
+    align-items: center;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* Stronger shadow for floating effect */
+    z-index: 999; /* Ensure it's above other content */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.navbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--navbar-item-color); /* Light color for inactive icons */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 500; /* Medium font weight */
+    padding: 0.5rem; /* Initial padding for icon */
+    border-radius: 9999px; /* Fully rounded for the active state background */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, padding 0.3s ease;
+    min-width: 50px; /* Smaller initial width for icon only */
+    height: 50px; /* Fixed height for icon-only state */
+    position: relative; /* For positioning the text */
+    overflow: visible; /* Allow tooltip to overflow */
+}
+
+.navbar-item .tooltip-text {
+    position: absolute;
+    top: -35px; /* Position above the icon */
+    background-color: var(--tooltip-bg);
+    color: var(--tooltip-text-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.375rem; /* rounded-md */
+    white-space: nowrap; /* Prevent text wrapping */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); /* Start slightly below */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    pointer-events: none; /* Allow clicks through to the item below */
+    z-index: 10; /* Ensure it's above other nav items */
+}
+
+.navbar-item .tooltip-text::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px; /* Position the arrow */
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background-color: var(--tooltip-bg);
+    border-radius: 2px; /* Slightly rounded arrow */
+    z-index: -1; /* Behind the text bubble */
+}
+
+.navbar-item:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Slide up to final position */
+}
+
+.navbar-item.active {
+    background-color: var(--navbar-active-bg); /* Orange/yellow background for active */
+    color: var(--navbar-active-color); /* Dark text/icon for active */
+    transform: translateY(-5px); /* More pronounced lift for active */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Shadow for active item */
+}
+
+.navbar-item svg {
+    width: 24px; /* Icon size */
+    height: 24px;
+    fill: currentColor; /* Use text color for SVG fill */
+    transition: fill 0.3s ease;
+}
+
+/* Adjust hero section padding to prevent content from being hidden under fixed navbar */
+#hero-section {
+    padding-bottom: 8rem; /* Enough space for the fixed bottom navbar */
+}
 
 /* Animation for elements entering the viewport */
 .fade-in-up-hidden {
